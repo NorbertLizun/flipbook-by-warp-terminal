@@ -7,6 +7,22 @@
 
     <!-- Minimal reset & layout -->
     <style>
+      :root {
+        --bg: radial-gradient(circle at top left, #15192c 0, #050712 45%, #020308 100%);
+        --card-bg: rgba(10, 12, 24, 0.92);
+        --card-border: rgba(120, 130, 255, 0.35);
+        --accent: #7c7eff;
+        --accent-soft: rgba(124, 126, 255, 0.12);
+        --accent-strong: rgba(124, 126, 255, 0.7);
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --danger: #f97373;
+        --radius-lg: 18px;
+        --radius-md: 10px;
+        --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.55);
+        --shadow-subtle: 0 12px 30px rgba(0, 0, 0, 0.45);
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -16,53 +32,268 @@
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
-        background: #f5f5f5;
-        color: #222;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        padding: 32px 18px;
+      }
+
+      .app-shell {
+        width: 100%;
+        max-width: 1100px;
+        background: radial-gradient(circle at top left, rgba(92, 95, 255, 0.06),
+              rgba(15, 23, 42, 0.96));
+        border-radius: 26px;
+        border: 1px solid rgba(148, 163, 255, 0.35);
+        box-shadow: var(--shadow-soft);
+        padding: 22px 22px 20px;
         display: flex;
         flex-direction: column;
+        gap: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .app-shell::before,
+      .app-shell::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(30px);
+        opacity: 0.65;
+        pointer-events: none;
+      }
+
+      .app-shell::before {
+        width: 220px;
+        height: 220px;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent 60%);
+        top: -80px;
+        right: -40px;
+      }
+
+      .app-shell::after {
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(244, 114, 182, 0.18), transparent 60%);
+        bottom: -90px;
+        left: -40px;
+      }
+
+      .app-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .app-header-top {
+        display: flex;
         align-items: center;
-        justify-content: flex-start;
-        min-height: 100vh;
-        padding: 20px;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
+        background: radial-gradient(circle at 30% 20%, #e5e7ff, #6366f1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #020617;
+        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.7);
       }
 
       h1 {
         font-size: 1.4rem;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
+        letter-spacing: 0.02em;
+        font-weight: 600;
       }
 
       .sub {
-        font-size: 0.85rem;
-        color: #666;
-        margin-bottom: 1rem;
-        text-align: center;
+        font-size: 0.9rem;
+        color: var(--muted);
+        max-width: 480px;
+      }
+
+      .pill {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(148, 163, 255, 0.6);
+        background: rgba(15, 23, 42, 0.5);
+        color: rgba(199, 210, 254, 0.9);
+      }
+
+      .app-main {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 320px) minmax(0, 1.2fr);
+        gap: 16px;
+        align-items: stretch;
+      }
+
+      @media (max-width: 880px) {
+        body {
+          padding: 18px 10px;
+        }
+
+        .app-shell {
+          border-radius: 20px;
+          padding: 16px 14px 14px;
+        }
+
+        .app-main {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      .panel {
+        background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+        border-radius: var(--radius-lg);
+        border: 1px solid rgba(15, 23, 42, 0.9);
+        box-shadow: var(--shadow-subtle);
+        padding: 14px 14px 12px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .panel::before {
+        content: "";
+        position: absolute;
+        inset: 1px;
+        border-radius: calc(var(--radius-lg) - 1px);
+        border: 1px solid rgba(148, 163, 255, 0.2);
+        pointer-events: none;
+      }
+
+      .panel-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .panel-upload-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #e5e7eb;
+      }
+
+      .panel-upload-sub {
+        font-size: 0.78rem;
+        color: var(--muted);
       }
 
       .upload-area {
-        border: 1px solid #ddd;
-        padding: 12px 16px;
-        border-radius: 6px;
-        background: #fff;
+        margin-top: 10px;
+        border-radius: var(--radius-md);
+        padding: 12px 12px;
+        border: 1px dashed rgba(148, 163, 255, 0.6);
+        background: radial-gradient(circle at top left, var(--accent-soft), rgba(15, 23, 42, 0.8));
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .upload-label-row {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 16px;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .upload-label-row label {
+        font-size: 0.83rem;
+        font-weight: 500;
+      }
+
+      .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #020617;
+        border: 1px solid rgba(148, 163, 255, 0.65);
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.65);
+      }
+
+      .file-input-visible {
+        padding: 6px 14px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        color: #e5e7eb;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .file-input-visible span {
+        font-size: 1.1rem;
       }
 
       .upload-area input[type="file"] {
-        font-size: 0.9rem;
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .upload-hint {
+        font-size: 0.76rem;
+        color: var(--muted);
       }
 
       .status {
-        font-size: 0.85rem;
-        color: #444;
-        margin-bottom: 12px;
-        min-height: 1em;
+        font-size: 0.78rem;
+        color: var(--muted);
+        min-height: 1.1em;
+        margin-top: 4px;
       }
 
-      .hidden {
-        display: none !important;
+      .status--error {
+        color: var(--danger);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+
+      .meta span {
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(75, 85, 99, 0.9);
+        background: rgba(15, 23, 42, 0.9);
+      }
+
+      .viewer-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
       }
 
       #flipbook-wrapper {
@@ -75,12 +306,13 @@
 
       #flipbook {
         position: relative;
-        width: min(90vw, 800px);
-        background: #e6e6e6;
-        border-radius: 8px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        width: min(90vw, 780px);
+        background: radial-gradient(circle at top, #111827, #020617);
+        border-radius: 18px;
+        box-shadow: 0 26px 60px rgba(15, 23, 42, 0.9);
         overflow: hidden;
-        perspective: 2000px; /* 3D perspective for page turns */
+        perspective: 2000px;
+        border: 1px solid rgba(15, 23, 42, 1);
       }
 
       .page {
@@ -92,12 +324,11 @@
         transform-style: preserve-3d;
         backface-visibility: hidden;
         transform-origin: left center;
-        background: #fff;
+        background: #f9fafb;
       }
 
-      /* Overlay canvas used only for the turning page (half width) */
       #page-flip {
-        width: 50%; /* half of the spread width */
+        width: 50%;
         z-index: 3;
       }
 
@@ -105,39 +336,102 @@
         visibility: hidden;
       }
 
+      #flipbook::before {
+        content: "";
+        display: block;
+        padding-top: 140%;
+        visibility: hidden;
+      }
+
       #controls {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 10px;
-        font-size: 0.9rem;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.86rem;
+        padding: 8px 10px 4px;
+        border-radius: var(--radius-md);
+        background: radial-gradient(circle at top left, rgba(15, 23, 42, 1), rgba(2, 6, 23, 1));
+        border: 1px solid rgba(30, 64, 175, 0.9);
+      }
+
+      .controls-left,
+      .controls-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
       }
 
       #controls button {
-        border: 1px solid #ccc;
-        background: #fff;
-        padding: 6px 10px;
-        border-radius: 4px;
+        border-radius: 999px;
+        border: 1px solid rgba(75, 85, 99, 0.9);
+        background: rgba(15, 23, 42, 0.85);
+        padding: 5px 11px;
         cursor: pointer;
-        font-size: 0.85rem;
-        transition: background 0.15s, transform 0.1s, box-shadow 0.1s;
+        font-size: 0.8rem;
+        color: #e5e7eb;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: background 0.15s ease, transform 0.08s ease,
+          box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+
+      #controls button.primary {
+        border-color: rgba(59, 130, 246, 0.95);
+        background: radial-gradient(circle at top left, #1d4ed8, #0f172a);
+        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.75);
       }
 
       #controls button:hover:not(:disabled) {
-        background: #f0f0f0;
+        background: rgba(15, 23, 42, 0.9);
+        border-color: rgba(148, 163, 255, 0.95);
+        box-shadow: 0 8px 22px rgba(148, 163, 255, 0.8);
       }
 
       #controls button:active:not(:disabled) {
-        transform: translateY(1px);
+        transform: translateY(1px) scale(0.99);
         box-shadow: none;
       }
 
       #controls button:disabled {
-        opacity: 0.4;
+        opacity: 0.45;
         cursor: default;
+        box-shadow: none;
+        border-style: dashed;
       }
 
       #sound-toggle {
-        margin-left: 10px;
+        min-width: 88px;
+      }
+
+      .zoom-group button {
+        min-width: 40px;
+      }
+
+      .zoom-group #zoom-reset-btn {
+        min-width: 54px;
+      }
+
+      .kbd-hint {
+        font-size: 0.7rem;
+        color: rgba(148, 163, 255, 0.9);
+        opacity: 0.9;
+      }
+
+      .kbd-hint kbd {
+        display: inline-block;
+        padding: 1px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(75, 85, 99, 0.9);
+        background: rgba(15, 23, 42, 0.9);
+        font-size: 0.7rem;
+      }
+
+      .hidden {
+        display: none !important;
       }
 
       /* Animations */
@@ -148,7 +442,6 @@
       }
 
       .turn-next-forward {
-        /* kept for compatibility; not used in single-page mode */
         animation: none;
         z-index: 1;
       }
@@ -160,16 +453,14 @@
       }
 
       .turn-next-backward {
-        /* kept for compatibility; not used in single-page mode */
         animation: none;
         z-index: 1;
       }
 
       @keyframes turn-current-forward {
-        /* Right page flipping over to the left in a 3D arc */
         0% {
           transform: rotateY(0deg) translateX(0%);
-          box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
         40% {
           transform: rotateY(-60deg) translateX(-4%);
@@ -181,15 +472,14 @@
         }
         100% {
           transform: rotateY(-180deg) translateX(-10%);
-          box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
       }
 
       @keyframes turn-current-backward {
-        /* Left page flipping back to the right in a 3D arc */
         0% {
           transform: rotateY(0deg) translateX(0%);
-          box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
         40% {
           transform: rotateY(60deg) translateX(4%);
@@ -201,26 +491,41 @@
         }
         100% {
           transform: rotateY(180deg) translateX(10%);
-          box-shadow: 0 0 0 rgba(0, 0, 0, 0.0);
+          box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
       }
 
-      /* Keep the flipbook at a comfortable aspect ratio */
-      #flipbook::before {
-        content: "";
-        display: block;
-        padding-top: 140%; /* approximate page ratio; adjusted dynamically after first render */
-        visibility: hidden;
-      }
-
-      /* Compact layout after a PDF is loaded: hide header to free space */
       body.pdf-loaded {
-        padding-top: 10px;
+        padding-top: 18px;
       }
 
       body.pdf-loaded h1,
       body.pdf-loaded .sub {
         display: none;
+      }
+
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: radial-gradient(circle at top left, #e0e7ff 0, #f9fafb 38%, #e5e7eb 100%);
+          --card-bg: #ffffff;
+          --text: #020617;
+          --muted: #6b7280;
+        }
+
+        body {
+          color: var(--text);
+        }
+
+        .panel,
+        #flipbook,
+        #controls {
+          background: #f9fafb;
+          color: var(--text);
+        }
+
+        .kbd-hint kbd {
+          background: #e5e7eb;
+        }
       }
     </style>
 
@@ -228,35 +533,83 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   </head>
   <body>
-    <h1>PDF Flipbook Viewer</h1>
-    <p class="sub">
-      Upload a PDF to view it as an interactive flipbook. All processing happens
-      in your browser.
-    </p>
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="app-header-top">
+          <div class="brand">
+            <div class="brand-badge">FB</div>
+            <div>
+              <h1>PDF Flipbook Viewer</h1>
+              <p class="sub">
+                Upload a PDF and flip through it with a smooth, book-like
+                animation. Everything is rendered privately in your browser.
+              </p>
+            </div>
+          </div>
+          <span class="pill">Client-side • No upload</span>
+        </div>
+      </header>
 
-    <div class="upload-area">
-      <label for="file-input">Choose PDF:</label>
-      <input type="file" id="file-input" accept="application/pdf" />
-    </div>
+      <main class="app-main">
+        <section class="panel panel-upload">
+          <div>
+            <div class="panel-upload-title">Document</div>
+            <p class="panel-upload-sub">
+              Select a PDF from your device. Larger files may take a moment to
+              render the first time.
+            </p>
+          </div>
 
-    <div class="status" id="status"></div>
+          <div class="upload-area" id="upload-area">
+            <div class="upload-label-row">
+              <label for="file-input">Choose or drop a PDF</label>
+              <div class="file-input-wrapper">
+                <div class="file-input-visible">
+                  <span>＋</span>
+                  <span>Select file</span>
+                </div>
+                <input type="file" id="file-input" accept="application/pdf" />
+              </div>
+            </div>
+            <p class="upload-hint">Maximize clarity by using high-resolution PDFs.</p>
+          </div>
 
-    <div id="flipbook-wrapper" class="hidden">
-      <div id="flipbook">
-        <canvas id="page-current" class="page"></canvas>
-        <canvas id="page-buffer" class="page hidden"></canvas>
-        <!-- Overlay canvas for single-page flip animation -->
-        <canvas id="page-flip" class="page hidden"></canvas>
-      </div>
+          <div class="status" id="status"></div>
 
-      <div id="controls">
-        <button id="prev-btn">Previous</button>
-        <button id="next-btn">Next</button>
-        <button id="sound-toggle">Sound: On</button>
-        <button id="zoom-out-btn" title="Zoom out">-</button>
-        <button id="zoom-reset-btn" title="Reset zoom">100%</button>
-        <button id="zoom-in-btn" title="Zoom in">+</button>
-      </div>
+          <div class="meta">
+            <span>Flip animation • Zoom controls</span>
+            <span>Best on desktop &amp; tablets</span>
+          </div>
+        </section>
+
+        <section class="panel viewer-panel">
+          <div id="flipbook-wrapper" class="hidden">
+            <div id="flipbook">
+              <canvas id="page-current" class="page"></canvas>
+              <canvas id="page-buffer" class="page hidden"></canvas>
+              <!-- Overlay canvas for single-page flip animation -->
+              <canvas id="page-flip" class="page hidden"></canvas>
+            </div>
+
+            <div id="controls">
+              <div class="controls-left">
+                <button id="prev-btn" class="primary">⟵ Previous</button>
+                <button id="next-btn" class="primary">Next ⟶</button>
+                <button id="sound-toggle">Sound: On</button>
+              </div>
+              <div class="controls-right zoom-group">
+                <button id="zoom-out-btn" title="Zoom out">−</button>
+                <button id="zoom-reset-btn" title="Reset zoom">100%</button>
+                <button id="zoom-in-btn" title="Zoom in">＋</button>
+              </div>
+            </div>
+          </div>
+          <p class="kbd-hint">
+            Tip: Use your mouse wheel in combination with the zoom controls for a
+            comfortable reading distance.
+          </p>
+        </section>
+      </main>
     </div>
 
     <script>
